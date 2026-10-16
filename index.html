@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poll Post Studio</title>
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Plus+Jakarta+Sans:wght@500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- RAIL: brand + live pipeline -->
+  <aside class="rail">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 20V11M12 20V4M19 20v-6"/></svg>
+      </span>
+      <div class="brand-text"><strong>Poll Post Studio</strong><small>සිංහල · Français</small></div>
+    </div>
+
+    <ol class="pipeline" id="pipeline" aria-label="Progress">
+      <li data-stage="0"><span class="node">1</span><span class="plabel">පුවත<small>Input</small></span></li>
+      <li data-stage="1"><span class="node">2</span><span class="plabel">Fact check<small>Google Search</small></span></li>
+      <li data-stage="2"><span class="node">3</span><span class="plabel">Français<small>Translate + grammar</small></span></li>
+      <li data-stage="3"><span class="node">4</span><span class="plabel">Post<small>Poll template</small></span></li>
+    </ol>
+
+    <div class="rail-foot">
+      <p id="modelInfo">Model: -</p>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="bar">
+      <div>
+        <h1>නව Post එකක්</h1>
+        <p>පුවත දාන්න. Fact check කරලා, French කරලා, post එක හදලා දෙන්නම්.</p>
+      </div>
+      <div class="bar-actions">
+        <button id="historyBtn" class="icon-btn" type="button" aria-label="History" title="History">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>
+        </button>
+        <button id="themeBtn" class="icon-btn" type="button" aria-label="Light / dark theme" title="Theme">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings" title="Settings">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="work">
+      <!-- INPUT -->
+      <section class="panel input-panel" aria-labelledby="inTitle">
+        <div class="panel-head">
+          <h2 id="inTitle">පුවත</h2>
+          <span id="counter" class="counter">0 අකුරු</span>
+        </div>
+
+        <label class="lbl" for="newsText">Paste කරන්න</label>
+        <textarea id="newsText" rows="9" placeholder="පුවත මෙතන paste කරන්න..."></textarea>
+
+        <span class="lbl">Screenshot <em>(optional)</em></span>
+        <div id="drop" class="drop" tabindex="0" role="button" aria-label="Upload screenshot">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" id="dropIcon" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-8 8"/></svg>
+          <span id="dropText">Drop කරන්න, click කරන්න, නැත්නම් <kbd>Ctrl</kbd> + <kbd>V</kbd></span>
+          <img id="preview" alt="Uploaded screenshot preview" hidden>
+        </div>
+        <input id="file" type="file" accept="image/*" hidden>
+        <button id="clearImg" class="btn ghost small" type="button" hidden>Screenshot ඉවත් කරන්න</button>
+
+        <span class="lbl">Post භාෂාව</span>
+        <div class="seg" role="radiogroup" aria-label="Post language">
+          <label><input type="radio" name="lang" value="si" checked><span>සිංහල</span></label>
+          <label><input type="radio" name="lang" value="si_fr"><span>සිංහල + Français</span></label>
+        </div>
+
+        <button id="go" class="btn primary wide" type="button">Analyse &amp; Generate</button>
+        <p id="status" class="status" role="status"></p>
+      </section>
+
+      <!-- OUTPUT -->
+      <section class="panel out-panel" aria-labelledby="outTitle">
+        <div class="panel-head">
+          <h2 id="outTitle">ප්‍රතිඵලය</h2>
+          <span id="runMeta" class="pill" hidden></span>
+        </div>
+
+        <div id="empty" class="empty">
+          <svg viewBox="0 0 140 90" width="140" height="90" fill="none" aria-hidden="true"><rect x="10" y="8" width="120" height="74" rx="12" stroke="currentColor" stroke-width="2"/><path d="M28 30h50M28 44h84M28 58h34" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="106" cy="30" r="7" stroke="var(--accent)" stroke-width="2.6"/></svg>
+          <p>පුවතක් දාලා <strong>Generate</strong> ඔබන්න.<br>Fact check, French translation සහ poll post එක මෙතන පෙනෙයි.</p>
+        </div>
+
+        <div id="loading" class="skeleton" hidden aria-label="Generating">
+          <div class="sk sk-banner"></div>
+          <div class="sk sk-tabs"></div>
+          <div class="sk sk-block"></div>
+          <div class="sk sk-line"></div>
+          <div class="sk sk-line short"></div>
+        </div>
+
+        <div id="result" hidden>
+          <div id="verdict" class="verdict">
+            <div class="v-icon" id="verdictIcon" aria-hidden="true"></div>
+            <div>
+              <strong id="verdictLabel"></strong>
+              <p id="verdictNote"></p>
+              <p id="riskNote" class="risk"></p>
+            </div>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="Result sections">
+            <button role="tab" id="tab-post" aria-controls="pane-post" aria-selected="true" data-tab="post">Post</button>
+            <button role="tab" id="tab-fr" aria-controls="pane-fr" aria-selected="false" tabindex="-1" data-tab="fr">Français</button>
+            <button role="tab" id="tab-src" aria-controls="pane-src" aria-selected="false" tabindex="-1" data-tab="src">Sources <span id="srcCount" class="badge">0</span></button>
+          </div>
+
+          <!-- POST -->
+          <div id="pane-post" role="tabpanel" aria-labelledby="tab-post" class="postgrid">
+            <div class="phone" aria-label="Facebook post preview">
+              <div class="phone-screen">
+                <article class="fbpost">
+                  <div class="fbhead"><span class="avatar">P</span><div><strong>Your Page</strong><small>Just now · 🌐</small></div></div>
+                  <h3 id="pTitle" class="pre" contenteditable="plaintext-only" spellcheck="false"></h3>
+                  <p id="pCaption" class="pre" contenteditable="plaintext-only" spellcheck="false"></p>
+                  <div class="poll" id="pPoll"></div>
+                  <p id="pCta" class="cta pre" contenteditable="plaintext-only" spellcheck="false"></p>
+                  <p id="pDisc" class="disc pre" contenteditable="plaintext-only" spellcheck="false"></p>
+                  <p id="pTags" class="tags" contenteditable="plaintext-only" spellcheck="false"></p>
+                </article>
+              </div>
+            </div>
+
+            <div class="side">
+              <h4>Template check</h4>
+              <ul id="checks" class="checks"></ul>
+              <p class="small-note">Preview එකේ text එක click කරලා කෙලින්ම edit කරන්න පුළුවන්. Copy කරද්දී edit කරපු version එකයි යන්නේ.</p>
+              <div class="row">
+                <button id="copy" class="btn primary" type="button">Post එක copy කරන්න</button>
+                <button id="regen" class="btn ghost" type="button">නැවත generate කරන්න</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- FRENCH -->
+          <div id="pane-fr" role="tabpanel" aria-labelledby="tab-fr" hidden>
+            <div class="frcard">
+              <div class="frhead">
+                <span class="chip">Français</span>
+                <span class="chip ok">Grammar checked</span>
+                <span class="chip" id="frWords">0 mots</span>
+              </div>
+              <div id="frNews" class="frtext pre" lang="fr"></div>
+            </div>
+            <div class="gcheck">
+              <h4>AI grammar check</h4>
+              <ul id="frCheck"></ul>
+              <p class="small-note">AI proofreading විදියටයි කරන්නේ. වැදගත් පුවතක් නම් post කරන්න කලින් French දන්න කෙනෙක්ට පෙන්වන්න.</p>
+            </div>
+            <div class="row">
+              <button id="copyFr" class="btn primary" type="button">French text එක copy කරන්න</button>
+            </div>
+          </div>
+
+          <!-- SOURCES -->
+          <div id="pane-src" role="tabpanel" aria-labelledby="tab-src" hidden>
+            <p class="hint">Google Search එකෙන් ලැබුණු මූලාශ්‍ර. Post කරන්න කලින් ඔයාම බලන්න.</p>
+            <ul id="sourceList" class="srclist"></ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<dialog id="settings">
+  <h2>Gemini settings</h2>
+  <p class="hint">API key එක ඔයාගේ browser එකේ localStorage එකේ විතරක් save වෙනවා. <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> එකෙන් ගන්න.</p>
+  <label for="apiKey">API key</label>
+  <input id="apiKey" type="password" autocomplete="off" placeholder="AIza...">
+  <label for="model">Model (free tier)</label>
+  <select id="model">
+    <option value="gemini-3.7-flash">gemini-3.7-flash (newest)</option>
+    <option value="gemini-3.5-flash">gemini-3.5-flash</option>
+    <option value="gemini-3-flash-preview">gemini-3-flash-preview</option>
+    <option value="gemini-2.5-flash">gemini-2.5-flash (older accounts only)</option>
+  </select>
+  <div class="row end">
+    <button id="saveSettings" class="btn primary" type="button">Save</button>
+  </div>
+</dialog>
+
+<dialog id="historyDlg">
+  <h2>History</h2>
+  <p class="hint">අන්තිමට හදපු post 12 ක් මේ browser එකේ save වෙනවා.</p>
+  <ul id="historyList" class="histlist"></ul>
+  <div class="row end">
+    <button id="clearHist" class="btn ghost" type="button">Clear all</button>
+    <button id="closeHist" class="btn" type="button">Close</button>
+  </div>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
